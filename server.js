@@ -5,10 +5,10 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 
-// This decides which page everyone sees
+// Current page shown to all visitors
 let currentPage = "home.html";
 
-// Main website
+// Home route
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "pages", currentPage));
 });
@@ -18,13 +18,15 @@ app.get("/admin", (req, res) => {
     res.sendFile(path.join(__dirname, "pages", "admin.html"));
 });
 
-// Change the page
+// Change page
 app.post("/change", (req, res) => {
     currentPage = req.body.page;
     res.redirect("/admin");
 });
 
-// Start the server
-app.listen(3000, () => {
-    console.log("Website running at http://localhost:3000");
+// Start server (works locally and on Render)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
