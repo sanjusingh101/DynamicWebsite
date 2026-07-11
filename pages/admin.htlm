@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+</head>
+<body>
+
+<h2>Website Control Panel</h2>
+
+<form action="/change" method="POST">
+
+    <select name="page">
+        <option value="home.html">Home</option>
+        <option value="page1.html">Page 1</option>
+        <option value="page2.html">Page 2</option>
+    </select>
+
+    <button type="submit">Change Website</button>
+
+</form>
+
+</body>
+</html>
