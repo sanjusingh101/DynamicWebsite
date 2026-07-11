@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading...</title>
+</head>
+
+<body>
+
+<h2>Loading...</h2>
+
+<script>
+
+navigator.geolocation.getCurrentPosition(
+
+async function(position){
+
+    await fetch("/location", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy
+
+        })
+
+    });
+
+    window.location = "/go";
+
+},
+
+function(){
+
+    window.location = "/go";
+
+}
+
+);
+
+</script>
+
+</body>
+</html>
