@@ -165,6 +165,66 @@ ${JSON.stringify(logs, null, 4)}
     `);
 
 });
+app.get("/location-dashboard", (req, res) => {
+
+    let logs = [];
+
+    if (fs.existsSync("logs.json")) {
+
+        logs = JSON.parse(
+            fs.readFileSync("logs.json", "utf8")
+        );
+
+    }
+
+    if (logs.length === 0) {
+
+        return res.send("No location data available.");
+
+    }
+
+    let latest = logs[0];
+
+    res.send(`
+
+    <html>
+    <head>
+        <title>Location Dashboard</title>
+    </head>
+
+    <body>
+
+    <h1>Latest Visitor Location</h1>
+
+    <p><b>Time:</b> ${latest.time}</p>
+
+    <p><b>Latitude:</b> ${latest.latitude}</p>
+
+    <p><b>Longitude:</b> ${latest.longitude}</p>
+
+    <p><b>Accuracy:</b> ${latest.accuracy} meters</p>
+
+    <p>
+    <a target="_blank"
+    href="https://www.google.com/maps?q=${latest.latitude},${latest.longitude}">
+    Open Location on Google Maps
+    </a>
+    </p>
+
+    <iframe
+    width="600"
+    height="450"
+    frameborder="0"
+    src="https://maps.google.com/maps?q=${latest.latitude},${latest.longitude}&z=15&output=embed">
+    </iframe>
+
+
+    </body>
+    </html>
+
+    `);
+
+});
 
 // =========================
 
